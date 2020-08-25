@@ -22,6 +22,7 @@ import static org.junit.Assert.assertFalse
 import static org.junit.Assert.assertNotEquals
 import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.assertNull
+import static org.junit.Assert.assertSame
 import static org.junit.Assert.assertTrue
 import static org.junit.Assert.fail
 
@@ -1880,14 +1881,14 @@ class TestNCube extends NCubeBaseTest
 
         set.clear()
         set.add("Male")
-        coord.Gender = set
+        assertSame(coord.Gender, set)
         result = ncube.getMap(coord)
         assertFalse("f".equals(result.Female))
         assertTrue("m".equals(result.Male))
 
         set.clear()
         set.add("Snail")
-        coord.Gender = set
+        assertSame(coord.Gender, set)
         result = ncube.getMap(coord)
         assertTrue(result.size() == 1)
         assertTrue("DEFAULT VALUE".equals(result.get(null)))
@@ -3109,22 +3110,32 @@ class TestNCube extends NCubeBaseTest
         coord.put("Bu", "PIM")
         coord.put("State", "GA")
         String x = (String) ncube.getCell(coord)
+        assertEquals("PIM", coord.Bu)
+        assertEquals("GA", coord.State)
         assertEquals("1", x)
 
         coord.put("state", "OH")
         x = (String) ncube.getCell(coord)
+        assertEquals("PIM", coord.Bu)
+        assertEquals("OH", coord.State)
         assertEquals("2", x)
 
         coord.put("STATE", "TX")
         x = (String) ncube.getCell(coord)
+        assertEquals("PIM", coord.Bu)
+        assertEquals("TX", coord.State)
         assertEquals("3", x)
 
         coord.put("state", "WY")
         x = (String) ncube.getCell(coord)
+        assertEquals("PIM", coord.Bu)
+        assertEquals("WY", coord.State)
         assertEquals("4", x)
 
         coord.put("bu", "EQM")
         x = (String) ncube.getCell(coord)
+        assertEquals("EQM", coord.Bu)
+        assertEquals("WY", coord.State)
         assertEquals("1", x)
 
         Set<String> scope = ncube.getRequiredScope([:], [:])
