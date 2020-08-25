@@ -13,6 +13,7 @@ import com.cedarsoftware.util.CaseInsensitiveMap
 import groovy.transform.CompileStatic
 import groovy.transform.TypeChecked
 import groovy.transform.TypeCheckingMode
+import ncube.grv.exp.NCubeGroovyExpression
 import org.junit.Test
 
 import static com.cedarsoftware.ncube.NCubeAppContext.ncubeRuntime
@@ -3137,6 +3138,18 @@ class TestNCube extends NCubeBaseTest
         assertEquals("EQM", coord.Bu)
         assertEquals("WY", coord.State)
         assertEquals("1", x)
+
+        try {
+            NCubeGroovyExpression.legacyNCubeGroovyExpression = true
+            x = (String) ncube.getCell(coord)
+            assertEquals("EQM", coord.Bu)
+            assertEquals("WY", coord.State)
+            assertEquals("10", x)
+        }
+        finally
+        {
+            NCubeGroovyExpression.legacyNCubeGroovyExpression = false
+        }
 
         Set<String> scope = ncube.getRequiredScope([:], [:])
         assertTrue(scope.size() == 2)
